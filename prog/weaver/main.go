@@ -192,7 +192,7 @@ func main() {
 
 	mflag.Parse()
 
-	peers = mflag.Args()
+	peers = filterEmpty(mflag.Args())
 	if resume && len(peers) > 0 {
 		Log.Fatalf("You must not specify an initial peer list in conjunction with --resume")
 	}
@@ -574,4 +574,16 @@ func checkFatal(e error) {
 	if e != nil {
 		Log.Fatal(e)
 	}
+}
+
+func filterEmpty(list []string) []string {
+	filtered := list[:0]
+
+	for _, s := range list {
+		if s != "" {
+			filtered = append(filtered, s)
+		}
+	}
+
+	return filtered
 }
